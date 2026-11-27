@@ -3,91 +3,126 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Grand Luxury Tree · v17.6</title>
-<meta name="description" content="Grand Luxury Tree v17.6 — 零依赖单文件粒子圣诞树：金色灯带、飘雪、星光与铃声音乐。">
+<title>Merry Christmas</title>
+<meta name="description" content="A particle Christmas tree that gathers out of the dark, and opens into a frame for one photograph.">
 <style>
-  :root{ --gold:#ffd98a; }
   *{margin:0;padding:0;box-sizing:border-box;}
-  html,body{height:100%;background:#03050b;overflow:hidden;}
+  html,body{height:100%;background:#06080c;overflow:hidden;}
   body{
-    font-family:"Noto Serif SC","Songti SC",Georgia,"Times New Roman",serif;
-    color:#f6ede0;-webkit-font-smoothing:antialiased;
-  }
-  canvas#scene{position:fixed;inset:0;display:block;width:100%;height:100%;z-index:1;}
-
-  .hero{
-    position:fixed;top:clamp(16px,4vh,50px);left:0;right:0;text-align:center;
-    pointer-events:none;z-index:5;opacity:0;transform:translateY(-10px);
-    animation:rise 1.5s cubic-bezier(.2,.7,.3,1) .9s forwards;
-  }
-  .hero h1{
-    font-size:clamp(20px,3.7vw,44px);font-weight:600;letter-spacing:.13em;
-    background:linear-gradient(180deg,#fff8e6 0%,#ffd98a 46%,#a8783a 100%);
-    -webkit-background-clip:text;background-clip:text;color:transparent;
-    filter:drop-shadow(0 0 16px rgba(255,196,92,.4));
-  }
-  .hero p{
-    margin-top:9px;font-size:clamp(9px,1.15vw,12px);
-    letter-spacing:.44em;color:rgba(228,211,182,.6);
+    font-family:"Songti SC","Noto Serif SC","Source Han Serif SC",Georgia,"Times New Roman",serif;
+    color:#efe6d6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
   }
 
-  .bar{
-    position:fixed;left:0;right:0;bottom:clamp(14px,3.2vh,36px);
-    display:flex;flex-direction:column;align-items:center;gap:12px;z-index:6;
-    opacity:0;animation:fade 1.2s ease-out 1.4s forwards;
-  }
-  .tip{font-size:clamp(10px,1.05vw,12px);letter-spacing:.2em;color:rgba(224,208,182,.48);text-align:center;padding:0 16px;}
-  .btns{display:flex;gap:9px;flex-wrap:wrap;justify-content:center;}
-  button{
-    appearance:none;cursor:pointer;padding:9px 17px;font-family:inherit;
-    font-size:clamp(11px,1.1vw,13px);letter-spacing:.1em;
-    color:rgba(246,236,218,.88);
-    background:rgba(255,222,160,.055);
-    border:1px solid rgba(255,214,140,.26);border-radius:999px;
-    backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);
-    transition:.26s ease;
-  }
-  button:hover{background:rgba(255,214,140,.15);border-color:rgba(255,214,140,.58);transform:translateY(-1px);}
-  button.on{
-    color:#201404;background:linear-gradient(180deg,#ffeec0,#dbb065);
-    border-color:rgba(255,240,200,.9);box-shadow:0 0 20px rgba(255,196,92,.4);
-  }
+  canvas#scene{position:fixed;inset:0;display:block;width:100%;height:100%;}
 
   .vignette{
-    position:fixed;inset:0;pointer-events:none;z-index:4;
-    background:radial-gradient(125% 95% at 50% 46%,transparent 36%,rgba(2,3,8,.7) 100%);
+    position:fixed;inset:0;pointer-events:none;z-index:2;
+    background:radial-gradient(130% 100% at 50% 46%,transparent 34%,rgba(3,5,9,.42) 72%,rgba(2,3,6,.86) 100%);
   }
+  .grain{
+    position:fixed;inset:0;pointer-events:none;z-index:3;opacity:.055;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='160' height='160' filter='url(%23n)' opacity='0.9'/></svg>");
+    background-size:160px 160px;
+  }
+
+  .masthead{
+    position:fixed;top:clamp(24px,6vh,76px);left:0;right:0;text-align:center;
+    z-index:5;pointer-events:none;
+    opacity:0;transform:translateY(8px);
+    transition:opacity 1.6s cubic-bezier(.2,.7,.2,1),transform 1.6s cubic-bezier(.2,.7,.2,1);
+  }
+  .masthead.on{opacity:1;transform:none;}
+  h1{
+    font-size:clamp(17px,2.55vw,28px);font-weight:400;
+    letter-spacing:.34em;text-indent:.34em;
+    color:#f2ead9;
+  }
+
+  .controls{
+    position:fixed;left:0;right:0;bottom:clamp(30px,5vh,54px);
+    display:flex;align-items:center;justify-content:center;gap:16px;
+    z-index:6;opacity:0;transition:opacity 1.2s ease;
+  }
+  .controls.on{opacity:1;}
+  .controls button{
+    appearance:none;border:0;background:none;cursor:pointer;
+    font-family:inherit;font-size:11px;letter-spacing:.24em;text-indent:.24em;
+    color:#ded2bd;opacity:.42;padding:5px 1px;position:relative;
+    transition:opacity .4s ease;
+  }
+  .controls button:hover{opacity:.78;}
+  .controls button[data-on="1"]{opacity:.92;}
+  .controls button[data-on="1"]::after{
+    content:"";position:absolute;left:0;right:0;bottom:0;height:1px;
+    background:linear-gradient(90deg,transparent,rgba(186,150,92,.9),transparent);
+  }
+  .controls i{width:1px;height:9px;background:rgba(222,210,189,.18);}
+
+  .hint{
+    position:fixed;left:0;right:0;bottom:clamp(10px,2vh,18px);
+    text-align:center;font-size:10px;letter-spacing:.2em;
+    color:rgba(222,210,189,.3);z-index:6;opacity:0;transition:opacity 1s ease;
+  }
+  .hint.on{opacity:1;}
+
+  .frameui{
+    position:fixed;left:0;right:0;bottom:clamp(26px,4.8vh,52px);
+    display:flex;align-items:center;justify-content:center;gap:24px;
+    z-index:7;opacity:0;pointer-events:none;transition:opacity .7s ease;
+  }
+  .frameui.on{opacity:1;pointer-events:auto;}
+  .frameui button{
+    appearance:none;border:0;background:none;cursor:pointer;font-family:inherit;
+    font-size:10.5px;letter-spacing:.22em;text-indent:.22em;color:rgba(226,214,192,.58);
+    padding:4px 0 3px;position:relative;transition:.35s;
+  }
+  .frameui button:hover{color:#f2ead9;}
+  .frameui button:hover::after{
+    content:"";position:absolute;left:0;right:0;bottom:0;height:1px;
+    background:linear-gradient(90deg,transparent,rgba(186,150,92,.85),transparent);
+  }
+  .frameui i{width:1px;height:9px;background:rgba(222,210,189,.18);}
+
   #boot{
     position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
-    background:#03050b;z-index:20;transition:opacity .9s ease;
-    font-size:13px;letter-spacing:.3em;color:rgba(230,212,180,.66);
+    background:#06080c;z-index:20;transition:opacity 1.1s ease;
+    font-size:11px;letter-spacing:.26em;color:rgba(222,210,189,.42);
   }
   #boot.gone{opacity:0;pointer-events:none;}
-  @keyframes rise{to{opacity:1;transform:translateY(0)}}
-  @keyframes fade{to{opacity:1}}
-  @keyframes blink{0%,100%{opacity:.25}50%{opacity:1}}
-  .dot{display:inline-block;animation:blink 1.4s infinite;}
+
+  @media (max-width:640px){
+    .controls{bottom:46px;}
+    .frameui{right:16px;bottom:58px;}
+  }
 </style>
 </head>
 <body>
 <canvas id="scene"></canvas>
 <div class="vignette"></div>
+<div class="grain"></div>
 
-<header class="hero">
+<header class="masthead" id="masthead">
   <h1>Merry Christmas</h1>
-  <p>Grand Luxury Tree · v17.6</p>
 </header>
 
-<div class="bar">
-  <div class="tip">拖拽旋转 · 滚轮缩放 · 双击飘雪</div>
-  <div class="btns">
-    <button id="btnMusic">♪ 铃声音乐</button>
-    <button id="btnSnow" class="on">❄ 飘雪</button>
-    <button id="btnSpin" class="on">⟳ 自转</button>
-  </div>
+<nav class="controls" id="controls">
+  <button id="btnMusic" data-on="0">音乐</button>
+  <i></i>
+  <button id="btnSnow" data-on="1">雪</button>
+  <i></i>
+  <button id="btnSpin" data-on="1">旋转</button>
+</nav>
+
+<div class="frameui" id="frameUI">
+  <button id="btnUpload">更换照片</button>
+  <i></i>
+  <button id="btnBack">返回圣诞树</button>
 </div>
 
-<div id="boot">正在点亮圣诞树<span class="dot">…</span></div>
+<div class="hint" id="hint">拖拽旋转 · 滚轮放大 · 双击落雪</div>
+<input type="file" id="file" accept="image/*" hidden>
+
+<div id="boot">让光慢慢聚拢<span class="dot">…</span></div>
 
 <script>
 (function(){
@@ -98,8 +133,7 @@ const canvas = document.getElementById('scene');
 const ctx = canvas.getContext('2d', { alpha: false });
 const boot = document.getElementById('boot');
 
-let W = 0, H = 0, DPR = 1;
-let bg = null;                 // 背景离屏画布
+let W = 0, H = 0, DPR = 1, bg = null;
 
 function resize(){
   W = innerWidth; H = innerHeight;
@@ -112,8 +146,8 @@ function resize(){
   buildBackground();
 }
 
-/* ================= 颜色与光点贴图 ================= */
-function hsl2rgb(h, s, l){
+/* ================= 色彩 ================= */
+function hsl(h, s, l){
   h = ((h % 360) + 360) % 360; s /= 100; l /= 100;
   const c = (1 - Math.abs(2 * l - 1)) * s;
   const x = c * (1 - Math.abs((h / 60) % 2 - 1));
@@ -128,159 +162,260 @@ function hsl2rgb(h, s, l){
   return [Math.round((r + m) * 255), Math.round((g + m) * 255), Math.round((b + m) * 255)];
 }
 
-function makeGlow(r, g, b, soft){
-  const S = 34;
+function glowSprite(rgb, spread){
+  const S = 40;
   const c = document.createElement('canvas');
   c.width = c.height = S;
-  const g2 = c.getContext('2d');
-  const rg = g2.createRadialGradient(S/2, S/2, 0, S/2, S/2, S/2);
-  rg.addColorStop(0,    'rgba(' + r + ',' + g + ',' + b + ',1)');
-  rg.addColorStop(0.16, 'rgba(' + r + ',' + g + ',' + b + ',' + (0.82 * soft) + ')');
-  rg.addColorStop(0.42, 'rgba(' + r + ',' + g + ',' + b + ',' + (0.22 * soft) + ')');
-  rg.addColorStop(0.72, 'rgba(' + r + ',' + g + ',' + b + ',' + (0.045 * soft) + ')');
-  rg.addColorStop(1,    'rgba(' + r + ',' + g + ',' + b + ',0)');
-  g2.fillStyle = rg;
-  g2.fillRect(0, 0, S, S);
+  const g = c.getContext('2d');
+  const rg = g.createRadialGradient(S/2, S/2, 0, S/2, S/2, S/2);
+  rg.addColorStop(0,    'rgba(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ',1)');
+  rg.addColorStop(0.15, 'rgba(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ',' + (0.8 * spread) + ')');
+  rg.addColorStop(0.42, 'rgba(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ',' + (0.16 * spread) + ')');
+  rg.addColorStop(0.72, 'rgba(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ',' + (0.03 * spread) + ')');
+  rg.addColorStop(1,    'rgba(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ',0)');
+  g.fillStyle = rg;
+  g.fillRect(0, 0, S, S);
   return c;
 }
 
-const SPRITE = [];
-function spriteOf(rgb, soft){
-  SPRITE.push(makeGlow(rgb[0], rgb[1], rgb[2], soft === undefined ? 1 : soft));
-  return SPRITE.length - 1;
+const SPR = [];
+function sprite(rgb, spread){
+  SPR.push(glowSprite(rgb, spread === undefined ? 1 : spread));
+  return SPR.length - 1;
 }
 
-/* 调色板：松针绿 6 阶 + 金 + 暖白 + 红 + 冰蓝 */
-const PAL = [];
-[ [105, 58, 16], [116, 62, 21], [126, 66, 27], [136, 72, 34], [146, 78, 42], [110, 46, 13] ]
-  .forEach(c => { const rgb = hsl2rgb(c[0], c[1], c[2]); PAL.push({ rgb, i: spriteOf(rgb, 0.9) }); });
-const GOLD  = { rgb:[255,201,108], i: spriteOf([255,201,108], 1) };
-const GOLDW = { rgb:[255,236,186], i: spriteOf([255,236,186], 1) };
-const WARM  = { rgb:[255,248,226], i: spriteOf([255,248,226], 1) };
-const RED   = { rgb:[255,86,78],  i: spriteOf([255,86,78], 1) };
-const ICE   = { rgb:[176,214,255], i: spriteOf([176,214,255], 1) };
+/* 松针不是光点，而是一小簇针叶：换掉圆形光斑，树才不像一团雾 */
+const TUFT = [];
+function tuftSprite(rgb, seed){
+  const S = 64;
+  const c = document.createElement('canvas');
+  c.width = c.height = S;
+  const g = c.getContext('2d');
+  g.translate(S / 2, S / 2);
+  g.lineCap = 'round';
 
-/* ================= 场景参数 ================= */
-const TREE = { height: 30, radius: 12.8, baseY: -14 };
-const CY = 1.0;                       // 视线中心高度
-let dist = 50;                        // 相机距离
-let fov = 1.16;                       // 焦距系数
-
-let ay = 0.35;                        // 方位角
-let ax = 0.055;                       // 俯仰角
-let zoom = 1;
-let dragging = false, autoSpin = true;
-let lastX = 0, lastY = 0, moved = 0;
-
-/* ================= 生成树 ================= */
-const T = { x: [], y: [], z: [], s: [], a: [], pal: [], tw: [] };
-
-function pushPoint(x, y, z, size, alpha, palIdx, twinkle){
-  T.x.push(x); T.y.push(y); T.z.push(z);
-  T.s.push(size); T.a.push(alpha);
-  T.pal.push(palIdx); T.tw.push(twinkle || 0);
+  /* 不要均匀放射，长短、角度都错开，才不会看成小雪花 */
+  const n = 8;
+  for(let k = 0; k < n; k++){
+    const ang = Math.random() * Math.PI * 2 + seed * 1.1;
+    const len = 7 + Math.pow(Math.random(), 1.35) * 19;
+    const bend = (Math.random() - 0.5) * 9;
+    const alpha = 0.28 + Math.random() * 0.42;
+    const ox = (Math.random() - 0.5) * 5, oy = (Math.random() - 0.5) * 5;
+    g.strokeStyle = 'rgba(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ',' + alpha.toFixed(3) + ')';
+    g.lineWidth = 1.15 + Math.random() * 0.85;
+    g.beginPath();
+    g.moveTo(ox, oy);
+    g.quadraticCurveTo(
+      ox + Math.cos(ang) * len * 0.55 - Math.sin(ang) * bend,
+      oy + Math.sin(ang) * len * 0.55 + Math.cos(ang) * bend,
+      ox + Math.cos(ang) * len,
+      oy + Math.sin(ang) * len
+    );
+    g.stroke();
+  }
+  TUFT.push(c);
+  return TUFT.length - 1;
 }
 
-/* 1. 松针粒子壳体 */
+/* 松针：低饱和的墨绿，只留一点层次 */
+const PINE = [];
+[ [128, 15, 9], [132, 17, 12], [136, 19, 15], [140, 21, 19], [130, 16, 23], [144, 23, 27] ]
+  .forEach(function(c){
+    const rgb = hsl(c[0], c[1], c[2]);
+    PINE.push({
+      rgb: rgb,
+      i: sprite(rgb, 0.62),
+      t: [tuftSprite(rgb, 0), tuftSprite(rgb, 1), tuftSprite(rgb, 2)]
+    });
+  });
+
+const IVORY = { rgb: [238, 229, 210], i: sprite([238, 229, 210], 0.85) };
+const GOLD  = { rgb: [198, 160, 100], i: sprite([198, 160, 100], 0.95) };
+const WINE  = { rgb: [132, 48, 42],   i: sprite([132, 48, 42], 0.8) };
+
+/* ================= 树 ================= */
+const TREE = { h: 30, r: 12.4, base: -14 };
+const CY = 1.0;
+
+const T = { n: 0, rT: [], aT: [], yT: [], r0: [], a0: [], y0: [], ca: [], sa: [],
+            sz: [], al: [], co: [], d: [], tw: [], fx: [], fy: [], inF: [], ee: [], tv: [] };
+
+function perimeterUnit(s){
+  if(s < 1.5) return [s / 1.5, 0];
+  if(s < 2.5) return [1, s - 1.5];
+  if(s < 4.0) return [1 - (s - 2.5) / 1.5, 1];
+  return [0, 1 - (s - 4.0)];
+}
+
+function addTreePoint(rT, aT, yT, r0, a0, y0, size, alpha, co, delay, twinkle){
+  const i = T.n++;
+  T.rT.push(rT); T.aT.push(aT); T.yT.push(yT);
+  T.r0.push(r0); T.a0.push(a0); T.y0.push(y0);
+  T.ca.push(Math.cos(aT)); T.sa.push(Math.sin(aT));
+  T.sz.push(size); T.al.push(alpha); T.co.push(co);
+  T.d.push(delay); T.tw.push(twinkle || 0); T.ee.push(0); T.tv.push((Math.random() * 3) | 0);
+
+  const inFrame = Math.random() < 0.16;
+  T.inF.push(inFrame);
+  if(inFrame){
+    T.fx.push(0.08 + Math.random() * 0.84);
+    T.fy.push(0.08 + Math.random() * 0.84);
+  }else{
+    const u = perimeterUnit(Math.random() * 5);
+    T.fx.push(u[0]);
+    T.fy.push(u[1]);
+  }
+  return i;
+}
+
+/* 1. 树身：先铺体积，再压枝条，最后勾一圈轮廓 */
 (function foliage(){
-  const COUNT = 11500;
+  const SMALL = Math.min(innerWidth, innerHeight) < 620;
+  const COUNT = SMALL ? 5200 : 7600;
   for(let i = 0; i < COUNT; i++){
-    const v = Math.pow(Math.random(), 1.34);
-    const y = TREE.baseY + v * TREE.height;
+    const v = Math.pow(Math.random(), 1.22);
+    const y = TREE.base + v * TREE.h;
 
-    const profile = Math.pow(1 - v, 1.14);
-    const tiers = 1 + Math.sin(v * Math.PI * 9) * 0.05 + Math.sin(v * Math.PI * 23) * 0.017;
-    const maxR = TREE.radius * profile * tiers;
+    const profile = Math.pow(1 - v, 1.06);
+    const tier = 1 + Math.sin(v * Math.PI * 9) * 0.03 + Math.sin(v * Math.PI * 23) * 0.01;
+    const maxR = TREE.r * profile * tier;
 
     const a = Math.random() * Math.PI * 2;
-    const frac = 0.50 + Math.pow(Math.random(), 0.58) * 0.50;
-    const r = maxR * frac;
+    const u = Math.pow(Math.random(), 0.55);
+    const r = maxR * (0.24 + u * 0.78);
 
-    const x = Math.cos(a) * r + (Math.random() - 0.5) * 0.5;
-    const z = Math.sin(a) * r + (Math.random() - 0.5) * 0.5;
-    const yy = y + (Math.random() - 0.5) * 0.55;
+    let co = PINE[(Math.random() * PINE.length) | 0].i;
+    let size = 0.34 + Math.random() * 0.38;
+    let alpha = 0.42 + 0.26 * (u * u);
+    let tw = 0;
 
-    const p = Math.random();
-    let pal, size = 0.30 + Math.random() * 0.36, alpha = 0.16 + Math.random() * 0.16, tw = 0;
+    const q = Math.random();
+    if(q < 0.02){ co = GOLD.i; size *= 1.3; alpha = 0.5; tw = 1; }
+    else if(q < 0.036){ co = IVORY.i; size *= 1.02; alpha = 0.32; tw = 1; }
+    else if(q < 0.046){ co = WINE.i; size *= 1.08; alpha = 0.3; }
 
-    if(p < 0.03){                         // 金色微光
-      pal = GOLD.i; size *= 1.5; alpha = 0.5; tw = 1;
-    }else if(p < 0.055){                  // 暖白
-      pal = WARM.i; size *= 1.15; alpha = 0.34; tw = 1;
-    }else if(p < 0.07){                   // 少量红点
-      pal = RED.i; size *= 1.2; alpha = 0.3;
-    }else{
-      const g = Math.random();
-      pal = PAL[Math.min(PAL.length - 1, (g * PAL.length) | 0)].i;
+    addTreePoint(
+      r, a, y,
+      20 + Math.random() * 34, a + (Math.random() - 0.5) * 3.4,
+      TREE.base - 8 + Math.random() * (TREE.h + 26),
+      size, alpha, co,
+      (1 - v) * 0.55 + Math.random() * 0.55, tw
+    );
+  }
+
+  /* 枝条：每层一小簇，向外微微下垂，让轮廓不是一条光滑的锥线 */
+  const TIERS = SMALL ? 14 : 19, PER = SMALL ? 165 : 210;
+  for(let ti = 0; ti < TIERS; ti++){
+    const v = 0.10 + (ti / TIERS) * 0.86;
+    const yTop = TREE.base + v * TREE.h;
+    const profile = Math.pow(1 - v, 1.06);
+    const maxR = TREE.r * profile;
+    const spread = ti * 2.39996 + 0.35;
+
+    for(let j = 0; j < PER; j++){
+      const u = Math.pow(Math.random(), 0.62);
+      const a = spread + (Math.random() - 0.5) * 1.05;
+      const r = maxR * (0.14 + u * 0.86);
+      const y = yTop - (u * u) * (0.45 + Math.random() * 1.25);
+
+      let co = PINE[(Math.random() * PINE.length) | 0].i;
+      let size = 0.30 + Math.random() * 0.36;
+      let alpha = 0.34 + 0.26 * u;
+      let tw = 0;
+      if(Math.random() < 0.05){ co = IVORY.i; alpha = 0.34; tw = 1; }
+
+      addTreePoint(
+        r, a, y,
+        22 + Math.random() * 30, a + (Math.random() - 0.5) * 3,
+        TREE.base - 8 + Math.random() * (TREE.h + 26),
+        size, alpha, co,
+        (1 - v) * 0.55 + Math.random() * 0.5, tw
+      );
     }
+  }
 
-    pushPoint(x, yy, z, size, alpha, pal, tw);
+  /* 轮廓：一圈更亮一点的松针，把形状托出来 */
+  const RIM = SMALL ? 520 : 720;
+  for(let i = 0; i < RIM; i++){
+    const v = Math.pow(Math.random(), 1.15);
+    const y = TREE.base + v * TREE.h;
+    const profile = Math.pow(1 - v, 1.06);
+    const maxR = TREE.r * profile;
+    const a = Math.random() * Math.PI * 2;
+    const r = maxR * (0.92 + Math.random() * 0.1);
+
+    const q = Math.random();
+    const co = q < 0.07 ? GOLD.i : (q < 0.16 ? IVORY.i : PINE[2 + ((Math.random() * 4) | 0)].i);
+
+    addTreePoint(
+      r, a, y,
+      20 + Math.random() * 30, a + (Math.random() - 0.5) * 3,
+      TREE.base - 8 + Math.random() * (TREE.h + 26),
+      0.36 + Math.random() * 0.32, 0.50 + Math.random() * 0.24, co,
+      (1 - v) * 0.55 + Math.random() * 0.5, q < 0.16 ? 1 : 0
+    );
   }
 })();
 
-/* 2. 金色灯带 */
+/* 2. 灯带：不去做满圈的金线，让光点疏密不均地绕上去 */
 (function garland(){
-  const N = 1100;
-  const TURNS = 8;
+  const N = Math.min(innerWidth, innerHeight) < 620 ? 430 : 560, TURNS = 4.55;
   for(let i = 0; i < N; i++){
     const u = i / (N - 1);
-    const y = TREE.baseY + 0.5 + u * (TREE.height - 1.2);
-    const r = TREE.radius * Math.pow(1 - u, 1.14) * 0.88;
-    const a = u * Math.PI * 2 * TURNS + 0.6;
+    const y = TREE.base + 0.6 + u * (TREE.h - 1.2);
+    const a = u * Math.PI * 2 * TURNS + 0.9;
+    const r = TREE.r * Math.pow(1 - u, 1.06) * (0.84 + Math.sin(u * 17) * 0.07);
+
     const pick = Math.random();
-    let pal, size, alpha;
-    if(pick < 0.58){ pal = GOLD.i;  size = 0.34 + Math.random() * 0.42; alpha = 0.40; }
-    else if(pick < 0.86){ pal = GOLDW.i; size = 0.30 + Math.random() * 0.38; alpha = 0.44; }
-    else { pal = WARM.i; size = 0.34 + Math.random() * 0.46; alpha = 0.38; }
-    pushPoint(Math.cos(a) * r, y, Math.sin(a) * r, size, alpha, pal, 2 + Math.random() * 2);
+    let co, size, alpha;
+    if(pick < 0.5){ co = GOLD.i; size = 0.20 + Math.random() * 0.26; alpha = 0.38 + Math.random() * 0.22; }
+    else if(pick < 0.82){ co = IVORY.i; size = 0.18 + Math.random() * 0.24; alpha = 0.42 + Math.random() * 0.22; }
+    else { co = WINE.i; size = 0.20 + Math.random() * 0.24; alpha = 0.24; }
+
+    /* 每七八颗里有一颗更亮的，光才不至于连成一条线 */
+    if(i % 7 === 0){ size *= 1.45; alpha *= 1.45; }
+
+    addTreePoint(
+      r, a, y,
+      18 + Math.random() * 30, a + (Math.random() - 0.5) * 3,
+      TREE.base - 10 + Math.random() * (TREE.h + 30),
+      size, alpha, co,
+      0.35 + u * 0.9 + Math.random() * 0.4, 1.8 + Math.random() * 1.2
+    );
   }
 })();
 
-/* 3. 彩球 */
+/* 3. 挂灯 */
 (function ornaments(){
-  const N = 74;
-  const pool = [RED, GOLD, ICE, GOLDW, [255,120,150], [150,120,255]];
+  const N = 46;
   for(let i = 0; i < N; i++){
-    const v = 0.06 + Math.random() * 0.9;
-    const y = TREE.baseY + v * TREE.height;
-    const r = TREE.radius * Math.pow(1 - v, 1.14) * (0.84 + Math.random() * 0.12);
+    const v = 0.05 + Math.random() * 0.9;
+    const y = TREE.base + v * TREE.h;
+    const r = TREE.r * Math.pow(1 - v, 1.12) * (0.82 + Math.random() * 0.1);
     const a = Math.random() * Math.PI * 2;
-    const p = pool[(Math.random() * pool.length) | 0];
-    pushPoint(Math.cos(a) * r, y, Math.sin(a) * r,
-              0.55 + Math.random() * 0.6, 0.5,
-              Array.isArray(p) ? spriteOf(p, 1) : p.i, 1.4 + Math.random() * 1.6);
+    const pick = Math.random();
+    const co = pick < 0.45 ? GOLD.i : (pick < 0.85 ? WINE.i : IVORY.i);
+    addTreePoint(
+      r, a, y,
+      16 + Math.random() * 28, a + (Math.random() - 0.5) * 2,
+      TREE.base - 6 + Math.random() * (TREE.h + 20),
+      0.62 + Math.random() * 0.55, 0.55, co,
+      0.6 + Math.random() * 1.2, 1.2 + Math.random() * 1.2
+    );
   }
 })();
-
-/* 3.5 环绕光尘 */
-const ORBIT = { r: [], y: [], a: [], sp: [], s: [], al: [], pal: [] };
-(function orbitDust(){
-  const N = 240;
-  for(let i = 0; i < N; i++){
-    const v = Math.random();
-    ORBIT.r.push(TREE.radius * (0.55 + Math.random() * 0.75));
-    ORBIT.y.push(TREE.baseY + v * TREE.height + (Math.random() - 0.5) * 4);
-    ORBIT.a.push(Math.random() * Math.PI * 2);
-    ORBIT.sp.push((0.06 + Math.random() * 0.22) * (Math.random() < 0.5 ? 1 : -1));
-    ORBIT.s.push(0.12 + Math.random() * 0.22);
-    ORBIT.al.push(0.22 + Math.random() * 0.3);
-    ORBIT.pal.push(Math.random() < 0.6 ? GOLD.i : WARM.i);
-  }
-})();
-
-/* 4. 树顶星位置 */
-const STAR_Y = TREE.baseY + TREE.height + 2.4;
 
 /* ================= 雪 ================= */
-const snow = { x: [], y: [], z: [], s: [], sp: [], ph: [] };
+const SNOW = { x: [], y: [], z: [], s: [], sp: [], ph: [] };
 (function initSnow(){
-  for(let i = 0; i < 1000; i++){
-    snow.x.push((Math.random() - 0.5) * 104);
-    snow.y.push(TREE.baseY + 8 + Math.random() * 56);
-    snow.z.push((Math.random() - 0.5) * 92);
-    snow.s.push(0.26 + Math.random() * 0.7);
-    snow.sp.push(0.7 + Math.random() * 1.9);
-    snow.ph.push(Math.random() * Math.PI * 2);
+  for(let i = 0; i < 760; i++){
+    SNOW.x.push((Math.random() - 0.5) * 96);
+    SNOW.y.push(TREE.base + 2 + Math.random() * 52);
+    SNOW.z.push((Math.random() - 0.5) * 80);
+    SNOW.s.push(0.12 + Math.random() * 0.26);
+    SNOW.sp.push(0.7 + Math.random() * 1.5);
+    SNOW.ph.push(Math.random() * Math.PI * 2);
   }
 })();
 
@@ -291,140 +426,591 @@ function buildBackground(){
   bg.height = Math.max(1, Math.round(H));
   const g = bg.getContext('2d');
 
-  const sky = g.createRadialGradient(W * 0.5, H * 0.46, 10, W * 0.5, H * 0.46, Math.max(W, H) * 0.78);
-  sky.addColorStop(0,   '#0c1a2e');
-  sky.addColorStop(0.32,'#081222');
-  sky.addColorStop(0.68,'#040811');
-  sky.addColorStop(1,   '#020308');
+  const sky = g.createRadialGradient(W * 0.5, H * 0.46, 8, W * 0.5, H * 0.46, Math.max(W, H) * 0.8);
+  sky.addColorStop(0,   '#0a0f16');
+  sky.addColorStop(0.34,'#070b11');
+  sky.addColorStop(0.7, '#040609');
+  sky.addColorStop(1,   '#020305');
   g.fillStyle = sky;
   g.fillRect(0, 0, W, H);
 
-  /* 地面暖光 */
-  const scale = H * fov / dist;
-  const gy = H * 0.52 + (CY - TREE.baseY) * scale;
-  const gr = Math.min(W, H) * 0.34;
-  const glow = g.createRadialGradient(W / 2, gy, 0, W / 2, gy, gr);
-  glow.addColorStop(0,   'rgba(255,180,92,0.26)');
-  glow.addColorStop(0.22,'rgba(255,152,72,0.13)');
-  glow.addColorStop(0.55,'rgba(255,140,60,0.045)');
-  glow.addColorStop(1,   'rgba(255,140,60,0)');
+  const scale = H * 1.12 / 50;
+  const gy = H * 0.52 + (CY - TREE.base) * scale;
+
+  const pool = g.createRadialGradient(W / 2, gy + 8, 0, W / 2, gy + 8, Math.min(W, H) * 0.34);
+  pool.addColorStop(0,   'rgba(255,196,120,0.09)');
+  pool.addColorStop(0.35,'rgba(255,180,110,0.03)');
+  pool.addColorStop(1,   'rgba(255,170,100,0)');
   g.globalCompositeOperation = 'lighter';
-  g.fillStyle = glow;
+  g.fillStyle = pool;
+  g.fillRect(0, 0, W, H);
+
+  /* 树身内侧的一点暖光，让整棵树不至于发冷 */
+  const core = g.createRadialGradient(W / 2, gy - 250, 0, W / 2, gy - 250, Math.min(W, H) * 0.26);
+  core.addColorStop(0,   'rgba(255,186,116,0.055)');
+  core.addColorStop(0.45,'rgba(255,178,108,0.022)');
+  core.addColorStop(1,   'rgba(255,170,100,0)');
+  g.fillStyle = core;
   g.fillRect(0, 0, W, H);
   g.globalCompositeOperation = 'source-over';
 
-  /* 极远处的星空 */
-  const starCount = Math.round(W * H / 9000);
-  for(let i = 0; i < starCount; i++){
+  /* 落地的影子，树才站得住 */
+  g.save();
+  g.translate(W / 2, gy + 10);
+  g.scale(1, 0.13);
+  const shade = g.createRadialGradient(0, 0, 0, 0, 0, Math.max(120, W * 0.155));
+  shade.addColorStop(0,   'rgba(0,0,0,0.40)');
+  shade.addColorStop(0.55,'rgba(0,0,0,0.14)');
+  shade.addColorStop(1,   'rgba(0,0,0,0)');
+  g.fillStyle = shade;
+  g.beginPath();
+  g.arc(0, 0, Math.max(120, W * 0.155), 0, Math.PI * 2);
+  g.fill();
+  g.restore();
+
+  const dark = g.createRadialGradient(W / 2, gy + 6, 0, W / 2, gy + 6, Math.min(W, H) * 0.42);
+  dark.addColorStop(0, 'rgba(0,0,0,0.32)');
+  dark.addColorStop(0.6,'rgba(0,0,0,0.1)');
+  dark.addColorStop(1, 'rgba(0,0,0,0)');
+  g.fillStyle = dark;
+  g.fillRect(0, 0, W, H);
+
+  const n = Math.round(W * H / 16000);
+  for(let i = 0; i < n; i++){
     const x = Math.random() * W;
-    const y = Math.random() * H * 0.85;
-    const r = Math.random() * 1.1 + 0.2;
-    const o = Math.random() * 0.35 + 0.06;
-    g.fillStyle = 'rgba(200,220,255,' + o.toFixed(3) + ')';
+    const y = Math.random() * H * 0.8;
+    const rr = Math.random() * 0.9 + 0.25;
+    const o = Math.random() * 0.22 + 0.05;
+    g.fillStyle = 'rgba(214,224,236,' + o.toFixed(3) + ')';
     g.beginPath();
-    g.arc(x, y, r, 0, Math.PI * 2);
+    g.arc(x, y, rr, 0, Math.PI * 2);
     g.fill();
   }
 }
 
-/* ================= 星形贴图 ================= */
+/* ================= 星 ================= */
 const starSprite = (function(){
-  const S = 200;
+  const S = 260;
   const c = document.createElement('canvas');
   c.width = c.height = S;
   const g = c.getContext('2d');
   const r = S / 2;
 
-  const halo = g.createRadialGradient(r, r, 0, r, r, r * 0.95);
-  halo.addColorStop(0,    'rgba(255,250,228,0.55)');
-  halo.addColorStop(0.08, 'rgba(255,242,200,0.45)');
-  halo.addColorStop(0.30, 'rgba(255,222,150,0.22)');
-  halo.addColorStop(0.62, 'rgba(255,200,110,0.06)');
-  halo.addColorStop(1,    'rgba(255,190,90,0)');
+  const halo = g.createRadialGradient(r, r, 0, r, r, r);
+  halo.addColorStop(0,   'rgba(255,238,206,0.24)');
+  halo.addColorStop(0.18,'rgba(255,226,178,0.09)');
+  halo.addColorStop(0.55,'rgba(255,214,158,0.025)');
+  halo.addColorStop(1,   'rgba(255,208,150,0)');
   g.fillStyle = halo;
   g.fillRect(0, 0, S, S);
 
-  g.save();
   g.translate(r, r);
-  g.globalCompositeOperation = 'lighter';
 
-  const rays = 12;
-  for(let i = 0; i < rays; i++){
-    const len = (i % 3 === 0) ? r * 0.97 : (i % 3 === 1 ? r * 0.60 : r * 0.38);
-    const wid = (i % 3 === 0) ? 0.030 : 0.017;
+  /* 两缕极淡的竖向光晕，只是让星点周围有一点空气感 */
+  g.globalCompositeOperation = 'lighter';
+  const rayLen = r * 0.5;
+  for(let i = 0; i < 2; i++){
     g.save();
-    g.rotate(i * Math.PI * 2 / rays);
-    const lg = g.createLinearGradient(0, 0, 0, -len);
-    lg.addColorStop(0,    'rgba(255,246,214,0.5)');
-    lg.addColorStop(0.35, 'rgba(255,226,160,0.2)');
-    lg.addColorStop(1,    'rgba(255,210,130,0)');
+    g.rotate(i * Math.PI / 2);
+    const lg = g.createLinearGradient(0, 0, 0, -rayLen);
+    lg.addColorStop(0,   'rgba(255,240,208,0.18)');
+    lg.addColorStop(0.5, 'rgba(255,228,180,0.04)');
+    lg.addColorStop(1,   'rgba(255,222,170,0)');
     g.fillStyle = lg;
     g.beginPath();
-    g.moveTo(0, 0);
-    g.lineTo(-r * wid, -len * 0.96);
-    g.lineTo(0, -len);
-    g.lineTo(r * wid, -len * 0.96);
-    g.closePath();
-    g.fill();
+    g.moveTo(0, 0); g.lineTo(-1.2, -rayLen * 0.98); g.lineTo(0, -rayLen); g.lineTo(1.2, -rayLen * 0.98);
+    g.closePath(); g.fill();
     g.restore();
   }
+  g.globalCompositeOperation = 'source-over';
 
-  const core = g.createRadialGradient(0, 0, 0, 0, 0, r * 0.15);
-  core.addColorStop(0,   'rgba(255,255,247,1)');
-  core.addColorStop(0.4, 'rgba(255,246,208,0.8)');
-  core.addColorStop(1,   'rgba(255,226,150,0)');
-  g.fillStyle = core;
+  /* 五角星本体 */
+  const R = r * 0.30, ri = R * 0.44;
   g.beginPath();
-  g.arc(0, 0, r * 0.15, 0, Math.PI * 2);
+  for(let k = 0; k < 10; k++){
+    const ang = -Math.PI / 2 + k * Math.PI / 5;
+    const rad = (k % 2 === 0) ? R : ri;
+    const px = Math.cos(ang) * rad, py = Math.sin(ang) * rad;
+    if(k === 0) g.moveTo(px, py); else g.lineTo(px, py);
+  }
+  g.closePath();
+
+  const goldGrad = g.createLinearGradient(0, -R, 0, R);
+  goldGrad.addColorStop(0,   'rgba(255,250,234,1)');
+  goldGrad.addColorStop(0.55,'rgba(255,238,201,0.96)');
+  goldGrad.addColorStop(1,   'rgba(236,192,132,0.84)');
+  g.fillStyle = goldGrad;
+  g.shadowColor = 'rgba(255,226,170,0.5)';
+  g.shadowBlur = r * 0.14;
   g.fill();
-  g.restore();
+
   return c;
 })();
 
-/* ================= 交互 ================= */
-let wheelTimer = null;
-canvas.addEventListener('pointerdown', e => {
-  dragging = true; moved = 0; lastX = e.clientX; lastY = e.clientY;
-  canvas.setPointerCapture && canvas.setPointerCapture(e.pointerId);
+const STAR_Y = TREE.base + TREE.h + 0.85;
+
+/* ================= 状态 ================= */
+let ay = 0.62, ax = 0.075;
+let zoom = 1, dist = 50, fov = 1.12;
+let dragging = false, autoSpin = true, snowOn = true;
+let lastX = 0, lastY = 0;
+let t = 0;
+let morph = 0, morphTarget = 0;
+let photo = null;
+const pointers = new Map();
+let pinchStart = 0, pinchZoom = 1;
+
+const isSmall = function(){ return Math.min(W, H) < 620; };
+
+function frameRect(){
+  const pad = isSmall() ? 22 : 48;
+  const h = Math.min(H * (isSmall() ? 0.56 : 0.60), (W - pad * 2) / 1.5);
+  const w = h * 1.5;
+  return { x: W / 2 - w / 2, y: H * 0.535 - h / 2, w: w, h: h };
+}
+
+/* ================= 渲染 ================= */
+let introFast = false;
+
+function render(){
+  if(bg) ctx.drawImage(bg, 0, 0, W, H);
+
+  const cosA = Math.cos(ay), sinA = Math.sin(ay);
+  const cosE = Math.cos(ax), sinE = Math.sin(ax);
+  const cx = W / 2, cy = H * 0.52;
+  const focal = H * fov;
+  const d = dist / zoom;
+  const fr = frameRect();
+  const fo = { x: fr.x - 9, y: fr.y - 9, w: fr.w + 18, h: fr.h + 18 };
+
+  ctx.globalCompositeOperation = 'lighter';
+
+  /* 雪先落，落在树的后面，前景才干净 */
+  if(snowOn && morph < 0.9){
+    const snowA = (1 - morph) * 0.13;
+    for(let i = 0; i < SNOW.x.length; i++){
+      const wx = SNOW.x[i], wy = SNOW.y[i] - CY, wz = SNOW.z[i];
+      const X = wx * cosA - wz * sinA;
+      const Z = wx * sinA + wz * cosA;
+      const Y = wy * cosE - Z * sinE;
+      const zc = wy * sinE + Z * cosE + d;
+      if(zc < 2) continue;
+
+      const k = focal / zc;
+      const px = cx + X * k, py = cy - Y * k;
+      const size = SNOW.s[i] * k;
+      if(size < 0.4) continue;
+
+      ctx.globalAlpha = snowA;
+      ctx.drawImage(SPR[IVORY.i], px - size / 2, py - size / 2, size, size);
+    }
+  }
+
+  const n = T.n;
+  for(let i = 0; i < n; i++){
+    let r, y, ang, e = 1;
+
+    if(!introFast && t < 5.6){
+      const q = (t - T.d[i]) / 1.7;
+      e = q <= 0 ? 0 : (q >= 1 ? 1 : 1 - Math.pow(1 - q, 3));
+      r = T.r0[i] + (T.rT[i] - T.r0[i]) * e;
+      y = T.y0[i] + (T.yT[i] - T.y0[i]) * e;
+      ang = T.aT[i] + ay + (1 - e) * 3.6;
+    }else{
+      r = T.rT[i];
+      y = T.yT[i];
+      ang = 0;
+    }
+
+    let x, z;
+    if(ang !== 0){
+      x = Math.cos(ang) * r;
+      z = Math.sin(ang) * r;
+    }else{
+      x = (T.ca[i] * cosA - T.sa[i] * sinA) * r;
+      z = (T.ca[i] * sinA + T.sa[i] * cosA) * r;
+    }
+
+    const yy = y - CY;
+    const X = x * cosA - z * sinA;
+    const Z = x * sinA + z * cosA;
+    const Y = yy * cosE - Z * sinE;
+    const zc = yy * sinE + Z * cosE + d;
+    if(zc < 2) continue;
+
+    const k = focal / zc;
+    let sx = cx + X * k;
+    let sy = cy - Y * k;
+
+    let size = T.sz[i] * k;
+    if(size > 44) size = 44;
+    if(size < 0.65) size = 0.65;
+
+    let alpha = T.al[i] * (0.62 + 0.38 * e);
+
+    /* 树尖太密会泛白，压一点 */
+    const vt = (T.yT[i] - TREE.base) / TREE.h;
+    if(vt > 0.88) alpha *= 0.5 + (1 - vt) * 3.4;
+
+    /* 深度：靠前的松针亮一点，靠后的沉下去，树才有体积 */
+    if(morph < 0.55){
+      const front = Math.max(0, Math.min(1, (d - zc) / 62));
+      alpha *= 0.82 + 0.24 * front;
+    }
+
+    if(morph > 0.002){
+      const tx = fo.x + T.fx[i] * fo.w;
+      const ty = fo.y + T.fy[i] * fo.h;
+      sx += (tx - sx) * morph;
+      sy += (ty - sy) * morph;
+      size *= 1 - 0.2 * morph;
+      alpha *= (morph > 0.55 ? 0.05 : (1 - morph * 0.94));
+      if(T.inF[i]) alpha *= 0.4;
+    }
+
+    const tw = T.tw[i];
+    if(tw > 0) alpha *= 0.66 + 0.34 * Math.sin(t * tw + i * 0.8);
+
+    if(alpha <= 0.01) continue;
+    if(sx < -size || sx > W + size || sy < -size || sy > H + size) continue;
+
+    const co = T.co[i];
+    const useTuft = co < 6 && morph < 0.4;
+    if(useTuft){
+      const want = size * (1.85 + T.tv[i] * 0.32);
+      if(want > 21){ alpha *= Math.pow(21 / want, 0.55); size = 21; } else size = want;
+    }
+    const half = size * 0.5;
+    ctx.globalAlpha = alpha > 1 ? 1 : alpha;
+    ctx.drawImage(useTuft ? TUFT[co * 3 + T.tv[i]] : SPR[co], sx - half, sy - half, size, size);
+  }
+
+  /* 星 */
+  {
+    const yy = STAR_Y - CY;
+    const Y = yy * cosE;
+    const zc = yy * sinE + d;
+    const k = focal / zc;
+    const px = cx, py = cy - Y * k;
+
+    let ignite = 1;
+    if(t < 3.05) ignite = 0;
+    else if(t < 3.7) ignite = (t - 3.05) / 0.65;
+
+    const pulse = 1 + Math.sin(t * 1.25) * 0.05;
+    const size = 4.05 * k * pulse * (0.35 + 0.65 * ignite);
+    const aStar = 0.78 * ignite * (1 - morph);
+
+    if(aStar > 0.02){
+      ctx.globalAlpha = aStar;
+      ctx.drawImage(starSprite, px - size / 2, py - size / 2, size, size);
+    }
+  }
+
+  ctx.globalAlpha = 1;
+  ctx.globalCompositeOperation = 'source-over';
+
+  if(morph > 0.32) drawFrame(fr, (morph - 0.32) / 0.68);
+}
+
+function drawFrame(fr, a){
+  const mat = Math.max(8, Math.min(15, fr.h * 0.028));
+  const inner = { x: fr.x + mat, y: fr.y + mat, w: fr.w - mat * 2, h: fr.h - mat * 2 };
+
+  ctx.save();
+  ctx.globalAlpha = a;
+
+  /* 相框落在桌面上的暖光 */
+  const floorGlow = ctx.createRadialGradient(W / 2, fr.y + fr.h + 18, 0, W / 2, fr.y + fr.h + 18, fr.w * 0.52);
+  floorGlow.addColorStop(0,   'rgba(255,186,120,0.07)');
+  floorGlow.addColorStop(0.55,'rgba(255,178,110,0.025)');
+  floorGlow.addColorStop(1,   'rgba(255,170,100,0)');
+  ctx.fillStyle = floorGlow;
+  ctx.fillRect(W / 2 - fr.w * 0.7, fr.y + fr.h - 40, fr.w * 1.4, 160);
+
+  /* 落在桌面上的影子 */
+  ctx.save();
+  ctx.shadowColor = 'rgba(0,0,0,0.68)';
+  ctx.shadowBlur = 48;
+  ctx.shadowOffsetY = 18;
+  ctx.fillStyle = '#e6ddca';
+  ctx.fillRect(fr.x, fr.y, fr.w, fr.h);
+  ctx.restore();
+
+  /* 卡纸 */
+  const matGrad = ctx.createLinearGradient(fr.x, fr.y, fr.x + fr.w, fr.y + fr.h);
+  matGrad.addColorStop(0,   '#f2ecdd');
+  matGrad.addColorStop(0.52,'#e9e1cf');
+  matGrad.addColorStop(1,   '#ddd3bf');
+  ctx.fillStyle = matGrad;
+  ctx.fillRect(fr.x, fr.y, fr.w, fr.h);
+
+  ctx.strokeStyle = 'rgba(255,255,255,0.32)';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(fr.x + 1.5, fr.y + 1.5, fr.w - 3, fr.h - 3);
+
+  /* 画面本身 */
+  ctx.fillStyle = '#0a0d12';
+  ctx.fillRect(inner.x, inner.y, inner.w, inner.h);
+
+  if(photo){
+    drawCover(photo, inner.x, inner.y, inner.w, inner.h);
+    const veil = ctx.createLinearGradient(inner.x, inner.y, inner.x, inner.y + inner.h);
+    veil.addColorStop(0,   'rgba(6,8,12,0.10)');
+    veil.addColorStop(0.42,'rgba(6,8,12,0.02)');
+    veil.addColorStop(1,   'rgba(6,8,12,0.16)');
+    ctx.fillStyle = veil;
+    ctx.fillRect(inner.x, inner.y, inner.w, inner.h);
+  }else{
+    const gl = ctx.createRadialGradient(inner.x + inner.w / 2, inner.y + inner.h * 0.58, 0,
+                                        inner.x + inner.w / 2, inner.y + inner.h * 0.58, inner.w * 0.44);
+    gl.addColorStop(0,   'rgba(255,190,124,0.07)');
+    gl.addColorStop(0.55,'rgba(255,184,116,0.025)');
+    gl.addColorStop(1,   'rgba(255,180,110,0)');
+    ctx.fillStyle = gl;
+    ctx.fillRect(inner.x, inner.y, inner.w, inner.h);
+
+    ctx.strokeStyle = 'rgba(186,150,92,0.26)';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(inner.x + 28, inner.y + 28, inner.w - 56, inner.h - 56);
+
+    const mx = inner.x + inner.w / 2, my = inner.y + inner.h / 2;
+    ctx.textAlign = 'center';
+
+    ctx.fillStyle = 'rgba(238,229,210,0.80)';
+    ctx.font = '15px "Songti SC","Noto Serif SC",Georgia,serif';
+    if('letterSpacing' in ctx) ctx.letterSpacing = '6px';
+    ctx.fillText('放一张照片', mx, my - 4);
+
+    ctx.fillStyle = 'rgba(238,229,210,0.30)';
+    ctx.font = '10px "Songti SC","Noto Serif SC",Georgia,serif';
+    if('letterSpacing' in ctx) ctx.letterSpacing = '2.5px';
+    ctx.fillText('点击选择 · 或直接拖入', mx, my + 26);
+    if('letterSpacing' in ctx) ctx.letterSpacing = '0px';
+  }
+
+  /* 画面四周压一层暗角，照片才像被压进纸里 */
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(inner.x, inner.y, inner.w, inner.h);
+  ctx.clip();
+  const iv = ctx.createRadialGradient(
+    inner.x + inner.w / 2, inner.y + inner.h / 2, Math.min(inner.w, inner.h) * 0.3,
+    inner.x + inner.w / 2, inner.y + inner.h / 2, Math.max(inner.w, inner.h) * 0.78
+  );
+  iv.addColorStop(0, 'rgba(0,0,0,0)');
+  iv.addColorStop(1, 'rgba(0,0,0,0.30)');
+  ctx.fillStyle = iv;
+  ctx.fillRect(inner.x, inner.y, inner.w, inner.h);
+  ctx.restore();
+
+  /* 相框的三条线：外沿金线、卡纸压边、画面暗边 */
+  ctx.strokeStyle = 'rgba(186,150,92,0.42)';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(fr.x + 0.5, fr.y + 0.5, fr.w - 1, fr.h - 1);
+
+  ctx.strokeStyle = 'rgba(186,150,92,0.38)';
+  ctx.strokeRect(inner.x - 2.5, inner.y - 2.5, inner.w + 5, inner.h + 5);
+
+  ctx.strokeStyle = 'rgba(8,10,14,0.55)';
+  ctx.strokeRect(inner.x - 0.5, inner.y - 0.5, inner.w + 1, inner.h + 1);
+
+  ctx.restore();
+}
+
+function drawCover(img, x, y, w, h){
+  const ir = img.width / img.height, r = w / h;
+  let sw, sh, sx, sy;
+  if(ir > r){ sh = img.height; sw = sh * r; sx = (img.width - sw) / 2; sy = 0; }
+  else { sw = img.width; sh = sw / r; sx = 0; sy = (img.height - sh) / 2; }
+  ctx.drawImage(img, sx, sy, sw, sh, x, y, w, h);
+}
+
+/* ================= 循环 ================= */
+let last = performance.now();
+let booted = false;
+
+function loop(now){
+  let dt = (now - last) / 1000;
+  last = now;
+  if(dt > 0.05) dt = 0.05;
+  t += dt;
+
+  const camT = Math.min(t / 3.6, 1);
+  const camE = 1 - Math.pow(1 - camT, 3);
+  dist = 63 - 13 * camE;
+  ax = 0.14 - 0.065 * camE;
+
+  if(autoSpin && !dragging && morph < 0.05 && t > 2.2) ay += dt * 0.085;
+
+  if(morph !== morphTarget){
+    const step = dt * 2.6;
+    if(morph < morphTarget) morph = Math.min(morphTarget, morph + step);
+    else morph = Math.max(morphTarget, morph - step * 1.4);
+  }
+
+  if(snowOn){
+    for(let i = 0; i < SNOW.y.length; i++){
+      SNOW.y[i] -= SNOW.sp[i] * dt * 1.35;
+      if(SNOW.y[i] < TREE.base - 8) SNOW.y[i] = TREE.base + 52;
+      SNOW.x[i] += Math.cos(t * 0.5 + SNOW.ph[i]) * dt * 1.2;
+    }
+  }
+
+  render();
+
+  if(!booted && t > 0.5){
+    booted = true;
+    boot.classList.add('gone');
+    setTimeout(function(){ if(boot.parentNode) boot.remove(); }, 1200);
+  }
+
+  requestAnimationFrame(loop);
+}
+
+/* ================= DOM ================= */
+const masthead = document.getElementById('masthead');
+const controls = document.getElementById('controls');
+const hintEl = document.getElementById('hint');
+const frameUI = document.getElementById('frameUI');
+const fileInput = document.getElementById('file');
+const btnMusic = document.getElementById('btnMusic');
+const btnSnow = document.getElementById('btnSnow');
+const btnSpin = document.getElementById('btnSpin');
+const shown = { title: false, controls: false, hint: false };
+
+/* ================= 输入 ================= */
+canvas.addEventListener('pointerdown', function(e){
+  pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+  if(pointers.size === 2){
+    const p = Array.from(pointers.values());
+    pinchStart = Math.hypot(p[0].x - p[1].x, p[0].y - p[1].y);
+    pinchZoom = zoom;
+  }
+  dragging = true;
+  lastX = e.clientX; lastY = e.clientY;
 });
-canvas.addEventListener('pointermove', e => {
+
+canvas.addEventListener('pointermove', function(e){
+  if(pointers.has(e.pointerId)) pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+  if(pointers.size === 2){
+    const p = Array.from(pointers.values());
+    const dd = Math.hypot(p[0].x - p[1].x, p[0].y - p[1].y);
+    if(pinchStart > 0) setZoom(pinchZoom * (dd / pinchStart));
+    return;
+  }
+
   if(!dragging) return;
   const dx = e.clientX - lastX, dy = e.clientY - lastY;
   lastX = e.clientX; lastY = e.clientY;
-  moved += Math.abs(dx) + Math.abs(dy);
-  ay -= dx * 0.0062;
-  ax = Math.max(-0.42, Math.min(0.62, ax + dy * 0.0035));
+  if(morph < 0.05){
+    ay -= dx * 0.0058;
+    ax = Math.max(-0.32, Math.min(0.5, ax + dy * 0.0032));
+  }
 });
-function endDrag(){ dragging = false; }
-canvas.addEventListener('pointerup', endDrag);
-canvas.addEventListener('pointercancel', endDrag);
-canvas.addEventListener('pointerleave', endDrag);
 
-canvas.addEventListener('wheel', e => {
+function endPointer(e){
+  pointers.delete(e.pointerId);
+  if(pointers.size < 2) pinchStart = 0;
+  dragging = false;
+}
+canvas.addEventListener('pointerup', endPointer);
+canvas.addEventListener('pointercancel', endPointer);
+canvas.addEventListener('pointerleave', endPointer);
+
+canvas.addEventListener('wheel', function(e){
   e.preventDefault();
-  zoom = Math.max(0.62, Math.min(2.1, zoom * Math.exp(-e.deltaY * 0.0011)));
+  setZoom(zoom * Math.exp(-e.deltaY * 0.0013));
 }, { passive: false });
 
-canvas.addEventListener('dblclick', () => {
+function setZoom(v){
+  zoom = Math.max(0.66, Math.min(2.3, v));
+  if(zoom > 1.42) morphTarget = 1;
+  else if(zoom < 1.12) morphTarget = 0;
+  syncMode();
+}
+
+function syncMode(){
+  const photoMode = morphTarget === 1;
+  frameUI.classList.toggle('on', photoMode);
+  controls.classList.toggle('on', !photoMode && t > 4.1);
+  hintEl.textContent = photoMode ? '滚轮缩小 · 回到圣诞树' : '拖拽旋转 · 滚轮放大 · 双击落雪';
+  hintEl.style.opacity = photoMode ? '0' : '';
+  hintEl.style.visibility = photoMode ? 'hidden' : '';
+}
+
+canvas.addEventListener('dblclick', function(){
   snowOn = !snowOn;
-  btnSnow.classList.toggle('on', snowOn);
+  btnSnow.dataset.on = snowOn ? '1' : '0';
 });
 
-/* ================= UI ================= */
-const btnMusic = document.getElementById('btnMusic');
-const btnSnow  = document.getElementById('btnSnow');
-const btnSpin  = document.getElementById('btnSpin');
-let snowOn = true;
+canvas.addEventListener('click', function(e){
+  if(morph < 0.55) return;
+  const fr = frameRect();
+  const mat = Math.max(8, Math.min(15, fr.h * 0.028));
+  const inner = { x: fr.x + mat, y: fr.y + mat, w: fr.w - mat * 2, h: fr.h - mat * 2 };
+  if(e.clientX > inner.x && e.clientX < inner.x + inner.w &&
+     e.clientY > inner.y && e.clientY < inner.y + inner.h){
+    fileInput.click();
+  }
+});
 
-btnSpin.addEventListener('click', () => {
+['dragenter', 'dragover'].forEach(function(ev){
+  window.addEventListener(ev, function(e){ e.preventDefault(); });
+});
+window.addEventListener('drop', function(e){
+  e.preventDefault();
+  const f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+  if(f) loadFile(f);
+});
+
+fileInput.addEventListener('change', function(){
+  if(fileInput.files && fileInput.files[0]) loadFile(fileInput.files[0]);
+});
+
+function loadFile(file){
+  if(!file.type || !file.type.startsWith('image/')) return;
+  const reader = new FileReader();
+  reader.onload = function(){
+    const img = new Image();
+    img.onload = function(){
+      photo = img;
+      zoom = Math.max(zoom, 1.5);
+      morphTarget = 1;
+      syncMode();
+    };
+    img.src = reader.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+btnSnow.addEventListener('click', function(){
+  snowOn = !snowOn;
+  btnSnow.dataset.on = snowOn ? '1' : '0';
+});
+btnSpin.addEventListener('click', function(){
   autoSpin = !autoSpin;
-  btnSpin.classList.toggle('on', autoSpin);
+  btnSpin.dataset.on = autoSpin ? '1' : '0';
+});
+document.getElementById('btnUpload').addEventListener('click', function(){ fileInput.click(); });
+document.getElementById('btnBack').addEventListener('click', function(){
+  zoom = 1; morphTarget = 0; syncMode();
 });
 
-/* ================= 音乐（WebAudio 铃声） ================= */
+/* 开场跳过 */
+window.addEventListener('pointerdown', function(e){
+  if(t > 0.2 && t < 3.4 && e.target === canvas){
+    t = 4.6;
+    ay = 0.42;
+    introFast = true;
+  }
+}, true);
+
+/* ================= 音乐 ================= */
 const NOTE = {
   C4:261.63, D4:293.66, E4:329.63, F4:349.23, G4:392.00, A4:440.00, B4:493.88,
-  C5:523.25, D5:587.33, E5:659.25, F5:698.46, G5:783.99, A5:880.00, B5:987.77
+  C5:523.25, D5:587.33, E5:659.25, F5:698.46, G5:783.99, A5:880.00
 };
 const MELODY = [
   ['E5',1],['E5',1],['E5',2],
@@ -434,14 +1020,14 @@ const MELODY = [
   ['F5',1],['E5',1],['E5',1],['E5',0.5],
   ['D5',1],['D5',1],['E5',1],['D5',2],['G5',2]
 ];
-const BEAT = 0.44;
+const BEAT = 0.52;
 let actx = null, musicOn = false, musicTimer = null;
 
-function playBell(freq, when, peak){
+function bell(freq, when, peak){
   const g = actx.createGain();
   g.gain.setValueAtTime(0.0001, when);
-  g.gain.linearRampToValueAtTime(peak, when + 0.02);
-  g.gain.exponentialRampToValueAtTime(0.0006, when + 1.1);
+  g.gain.linearRampToValueAtTime(peak, when + 0.03);
+  g.gain.exponentialRampToValueAtTime(0.0004, when + 1.4);
   g.connect(actx.destination);
 
   const o1 = actx.createOscillator();
@@ -450,27 +1036,26 @@ function playBell(freq, when, peak){
 
   const o2 = actx.createOscillator();
   o2.type = 'sine';
-  o2.frequency.setValueAtTime(freq * 2.02, when);
+  o2.frequency.setValueAtTime(freq * 2.01, when);
   const g2 = actx.createGain();
-  g2.gain.value = 0.3;
+  g2.gain.value = 0.26;
 
   o1.connect(g);
   o2.connect(g2); g2.connect(g);
   o1.start(when); o2.start(when);
-  o1.stop(when + 1.25); o2.stop(when + 1.25);
+  o1.stop(when + 1.5); o2.stop(when + 1.5);
 }
 
-function schedule(startAt){
-  let t = startAt;
+function schedule(start){
+  let s = start;
   for(let i = 0; i < MELODY.length; i++){
-    const name = MELODY[i][0], beats = MELODY[i][1];
-    playBell(NOTE[name], t, name === 'G5' ? 0.062 : 0.045);
-    t += beats * BEAT;
+    bell(NOTE[MELODY[i][0]], s, MELODY[i][0] === 'G5' ? 0.045 : 0.032);
+    s += MELODY[i][1] * BEAT;
   }
-  return t;
+  return s;
 }
 
-btnMusic.addEventListener('click', () => {
+btnMusic.addEventListener('click', function(){
   if(!actx){
     const AC = window.AudioContext || window.webkitAudioContext;
     if(!AC) return;
@@ -480,169 +1065,44 @@ btnMusic.addEventListener('click', () => {
     musicOn = false;
     clearTimeout(musicTimer);
     actx.suspend();
-    btnMusic.classList.remove('on');
+    btnMusic.dataset.on = '0';
   }else{
     musicOn = true;
     actx.resume();
-    const loop = () => {
+    (function again(){
       if(!musicOn) return;
-      const end = schedule(actx.currentTime + 0.06);
-      musicTimer = setTimeout(loop, Math.max(60, (end - actx.currentTime - 0.3) * 1000));
-    };
-    loop();
-    btnMusic.classList.add('on');
+      const end = schedule(actx.currentTime + 0.05);
+      musicTimer = setTimeout(again, Math.max(80, (end - actx.currentTime - 0.3) * 1000));
+    })();
+    btnMusic.dataset.on = '1';
   }
 });
 
-/* ================= 渲染 ================= */
-let time = 0;
-let last = performance.now();
-
-function render(){
-  /* 背景 */
-  if(bg) ctx.drawImage(bg, 0, 0, W, H);
-
-  const cA = Math.cos(ay), sA = Math.sin(ay);
-  const cE = Math.cos(ax), sE = Math.sin(ax);
-  const cenX = W / 2;
-  const cenY = H * 0.52;
-  const focal = H * fov;
-  const d = dist / zoom;
-
-  ctx.globalCompositeOperation = 'lighter';
-
-  /* 树的粒子 */
-  const n = T.x.length;
-  for(let i = 0; i < n; i++){
-    const x = T.x[i], y = T.y[i] - CY, z = T.z[i];
-
-    const X = x * cA - z * sA;
-    const Z = x * sA + z * cA;
-    const Y = y * cE - Z * sE;
-    const zc = y * sE + Z * cE + d;
-    if(zc < 2) continue;
-
-    const k = focal / zc;
-    const sx = cenX + X * k;
-    const sy = cenY - Y * k;
-
-    let size = T.s[i] * k;
-    if(size < 0.7) size = 0.7;
-    if(size > 46) size = 46;
-
-    let alpha = T.a[i] * (0.7 + 0.3 * (d / zc));
-    if(alpha > 1) alpha = 1;
-
-    const tw = T.tw[i];
-    if(tw > 0) alpha *= 0.62 + 0.38 * Math.sin(time * tw + i * 0.7);
-
-    const half = size * 0.5;
-    if(sx < -size || sx > W + size || sy < -size || sy > H + size) continue;
-
-    ctx.globalAlpha = alpha;
-    ctx.drawImage(SPRITE[T.pal[i]], sx - half, sy - half, size, size);
-  }
-
-  /* 环绕光尘 */
-  {
-    const n2 = ORBIT.r.length;
-    for(let i = 0; i < n2; i++){
-      const ang = ORBIT.a[i] + time * ORBIT.sp[i];
-      const x = Math.cos(ang) * ORBIT.r[i];
-      const z = Math.sin(ang) * ORBIT.r[i];
-      const y = ORBIT.y[i] - CY;
-
-      const X = x * cA - z * sA;
-      const Z = x * sA + z * cA;
-      const Y = y * cE - Z * sE;
-      const zc = y * sE + Z * cE + d;
-      if(zc < 2) continue;
-
-      const k = focal / zc;
-      const px = cenX + X * k;
-      const py = cenY - Y * k;
-      const size = ORBIT.s[i] * k;
-      ctx.globalAlpha = ORBIT.al[i] * (0.4 + 0.6 * Math.abs(Math.sin(time * 1.3 + i)));
-      ctx.drawImage(SPRITE[ORBIT.pal[i]], px - size / 2, py - size / 2, size, size);
-    }
-  }
-
-  /* 雪 */
-  if(snowOn){
-    const sn = snow.x.length;
-    for(let i = 0; i < sn; i++){
-      const sx0 = snow.x[i];
-      const sy0 = snow.y[i] - CY;
-      const sz0 = snow.z[i];
-
-      const X = sx0 * cA - sz0 * sA;
-      const Z = sx0 * sA + sz0 * cA;
-      const Y = sy0 * cE - Z * sE;
-      const zc = sy0 * sE + Z * cE + d;
-      if(zc < 2) continue;
-
-      const k = focal / zc;
-      const px = cenX + X * k;
-      const py = cenY - Y * k;
-      const size = snow.s[i] * k;
-      if(size < 0.5) continue;
-
-      ctx.globalAlpha = 0.30;
-      ctx.drawImage(SPRITE[WARM.i], px - size / 2, py - size / 2, size, size);
-    }
-  }
-
-  /* 树顶星 */
-  {
-    const y = STAR_Y - CY;
-    const X = 0, Z = 0;
-    const Y = y * cE - Z * sE;
-    const zc = y * sE + Z * cE + d;
-    const k = focal / zc;
-    const px = cenX, py = cenY - Y * k;
-    const pulse = 1 + Math.sin(time * 1.7) * 0.07;
-    const size = 6.2 * k * pulse;
-    const halo = size * 1.9;
-    ctx.globalAlpha = 0.42 + Math.sin(time * 1.7) * 0.1;
-    ctx.drawImage(SPRITE[GOLD.i], px - halo / 2, py - halo / 2, halo, halo);
-    ctx.globalAlpha = 0.92;
-    ctx.drawImage(starSprite, px - size / 2, py - size / 2, size, size);
-  }
-
-  ctx.globalAlpha = 1;
-  ctx.globalCompositeOperation = 'source-over';
-}
-
-function frame(now){
-  let dt = (now - last) / 1000;
-  last = now;
-  if(dt > 0.05) dt = 0.05;
-  time += dt;
-
-  if(autoSpin && !dragging) ay += dt * 0.11;
-
-  /* 雪下落（世界坐标） */
-  if(snowOn){
-    for(let i = 0; i < snow.y.length; i++){
-      snow.y[i] -= snow.sp[i] * dt * 1.5;
-      if(snow.y[i] < TREE.baseY - 6) snow.y[i] = TREE.baseY + 58;
-      snow.x[i] += Math.cos(time * 0.6 + snow.ph[i]) * dt * 1.6;
-    }
-  }
-
-  render();
-  requestAnimationFrame(frame);
-}
-
 /* ================= 启动 ================= */
-addEventListener('resize', resize);
-resize();
-requestAnimationFrame(frame);
+addEventListener('resize', function(){
+  resize();
+  syncMode();
+});
 
-setTimeout(function(){
-  boot.classList.add('gone');
-  setTimeout(function(){ if(boot.parentNode) boot.remove(); }, 1000);
-}, 380);
+resize();
+
+(function params(){
+  const q = new URLSearchParams(location.search);
+  if(q.get('photo') === '1'){ t = 6; zoom = 1.55; morph = 1; morphTarget = 1; }
+  if(q.get('skip') === '1'){ t = 6; }
+  const at = parseFloat(q.get('at'));
+  if(!isNaN(at)){ t = at; introFast = at > 5.6; }
+})();
+
+syncMode();
+requestAnimationFrame(loop);
+
+setInterval(function(){
+  if(!shown.title && t > 3.5){ shown.title = true; masthead.classList.add('on'); }
+  if(!shown.hint && t > 4.3){ shown.hint = true; hintEl.classList.add('on'); }
+  if(!shown.controls && t > 4.1){ shown.controls = true; syncMode(); }
+  if(!introFast && t > 5.6) introFast = true;
+}, 90);
 
 })();
 </script>
